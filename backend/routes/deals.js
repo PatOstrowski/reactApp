@@ -29,42 +29,46 @@ router.get("/", async (req, res) => {
 });
 
 // GET Deal Details
-router.get("/:id", async (req, res) => {
+router.get("/api/:id", async (req, res) => {
   try {
     const deal = await Deal.findById(req.params.id);
     if (!deal) {
-      return res.status(404).send("Deal not found");
+      return res.status(404).json({ message: "Deal not found" });
     }
-    res.render("deals/show", {
-      title: deal.title,
-      deal,
-      layout: "./Layouts/layout",
-    });
+    res.json(deal);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
 // POST Upvote Deal
-router.post("/:id/upvote", async (req, res) => {
+router.post("/api/:id/upvote", async (req, res) => {
   try {
-    await Deal.findByIdAndUpdate(req.params.id, { $inc: { score: 1 } });
-    res.redirect("/deals");
+    const deal = await Deal.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { score: 1 } },
+      { new: true },
+    );
+    res.json(deal); // Zwracamy zaktualizowany obiekt w JSON
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
 // POST Downvote Deal
-router.post("/:id/downvote", async (req, res) => {
+router.post("/api/:id/downvote", async (req, res) => {
   try {
-    await Deal.findByIdAndUpdate(req.params.id, { $inc: { score: -1 } });
-    res.redirect("/deals");
+    const deal = await Deal.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { score: -1 } },
+      { new: true },
+    );
+    res.json(deal); // Zwracamy zaktualizowany obiekt w JSON
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).json({ error: "Server Error" });
   }
 });
 

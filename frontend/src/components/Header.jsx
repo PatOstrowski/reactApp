@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Header() {
   // W React zamiast locals.user używamy stanu, dla uproszczenia zakładamy że użytkownik nie jest zalogowany
   const user = null;
