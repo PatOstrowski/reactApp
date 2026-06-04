@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -14,6 +15,7 @@ const dealsRouter = require("./routes/deals");
 const tipsRouter = require("./routes/tips");
 
 const app = express();
+app.use(cors());
 
 // Database setup
 mongoose
