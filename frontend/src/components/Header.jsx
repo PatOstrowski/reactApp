@@ -1,7 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Header() {
-  const user = null;
+export default function Header({ user, setUser }) {
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      // Wywołujemy Twój oryginalny endpoint /logout z Expressa
+      await fetch("http://localhost:3000/auth/logout", {
+        credentials: "include",
+      });
+
+      // Czyścimy pamięć Reacta
+      localStorage.removeItem("user");
+      setUser(null);
+
+      // Wracamy na stronę główną
+      navigate("/");
+    } catch (err) {
+      console.error("Błąd podczas wylogowywania:", err);
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
@@ -46,13 +65,20 @@ export default function Header() {
           <ul className="navbar-nav">
             {user ? (
               <>
-                <li className="nav-item">
-                  <span className="nav-link">Welcome, {user.name}</span>
+                <li className="nav-item d-flex align-items-center">
+                  <span className="nav-link text-primary fw-bold">
+                    Welcome, {user.name}
+                  </span>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/auth/logout">
+                  <a
+                    className="nav-link text-danger"
+                    href="#"
+                    onClick={handleLogout}
+                    style={{ cursor: "pointer" }}
+                  >
                     Logout
-                  </Link>
+                  </a>
                 </li>
               </>
             ) : (

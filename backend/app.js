@@ -15,7 +15,12 @@ const dealsRouter = require("./routes/deals");
 const tipsRouter = require("./routes/tips");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 // Database setup
 mongoose
