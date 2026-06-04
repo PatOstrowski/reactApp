@@ -1,16 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function CookiePolicy() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
+  const [isVisible, setIsVisible] = useState(() => {
     const hasCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("cookiePolicyProject="));
-    if (!hasCookie) {
-      setIsVisible(true);
-    }
-  }, []);
+
+    return !hasCookie;
+  });
 
   const closeCookieWindow = () => {
     const d = new Date();

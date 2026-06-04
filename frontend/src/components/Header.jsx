@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom";
+
 export default function Header() {
-  // W React zamiast locals.user używamy stanu, dla uproszczenia zakładamy że użytkownik nie jest zalogowany
   const user = null;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+        <Link className="navbar-brand" to="/">
           Projekt React
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -22,24 +23,24 @@ export default function Header() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="/">
+              <Link className="nav-link" to="/">
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#deals">
+              <Link className="nav-link" to="/deals">
                 Deals
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#tips">
+              <Link className="nav-link" to="/tips">
                 Sugestie Okazji
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#about">
+              <Link className="nav-link" to="/about">
                 About
-              </a>
+              </Link>
             </li>
           </ul>
           <ul className="navbar-nav">
@@ -49,22 +50,22 @@ export default function Header() {
                   <span className="nav-link">Welcome, {user.name}</span>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#logout">
+                  <Link className="nav-link" to="/auth/logout">
                     Logout
-                  </a>
+                  </Link>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <a className="nav-link" href="#login">
+                  <Link className="nav-link" to="/auth/login">
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#register">
+                  <Link className="nav-link" to="/auth/register">
                     Register
-                  </a>
+                  </Link>
                 </li>
               </>
             )}

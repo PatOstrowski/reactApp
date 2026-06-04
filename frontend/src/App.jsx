@@ -4,8 +4,9 @@ import Footer from "./components/Footer";
 import WcagHelper from "./components/WcagHelper";
 import CookiePolicy from "./components/CookiePolicy";
 import DealList from "./components/DealList";
-import CatFact from "./components/CatFact";
 import DealDetails from "./components/DealDetails";
+import Home from "./components/Home";
+import About from "./components/About";
 
 function App() {
   return (
@@ -16,20 +17,16 @@ function App() {
       <main>
         <div id="main" className="container">
           <Routes>
-            {/* Strona główna z ciekawostką i listą okazji */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <CatFact />
-                  <hr className="my-5" />
-                  <DealList />
-                </>
-              }
-            />
-
-            {/* Podstrona ze szczegółami konkretnej okazji */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/deals" element={<DealList />} />
             <Route path="/deals/:id" element={<DealDetails />} />
+
+            {/* Tutaj w przyszłości dodamy logowanie i sugestie okazji */}
+            <Route
+              path="*"
+              element={<h2 className="text-center mt-5">Strona w budowie</h2>}
+            />
           </Routes>
         </div>
       </main>
