@@ -22,16 +22,15 @@ export default function Register({ setUser }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        credentials: "include", // Bardzo ważne dla utrzymania sesji!
+        credentials: "include",
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Zapisujemy użytkownika w przeglądarce i aktualizujemy aplikację
         localStorage.setItem("user", JSON.stringify(data));
         setUser(data);
-        navigate("/"); // Przekierowanie na stronę główną
+        navigate("/");
       } else {
         setError(data.error || "Wystąpił błąd podczas rejestracji");
       }

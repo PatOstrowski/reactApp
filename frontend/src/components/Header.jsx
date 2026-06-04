@@ -6,16 +6,13 @@ export default function Header({ user, setUser }) {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      // Wywołujemy Twój oryginalny endpoint /logout z Expressa
       await fetch("http://localhost:3000/auth/logout", {
         credentials: "include",
       });
 
-      // Czyścimy pamięć Reacta
       localStorage.removeItem("user");
       setUser(null);
 
-      // Wracamy na stronę główną
       navigate("/");
     } catch (err) {
       console.error("Błąd podczas wylogowywania:", err);

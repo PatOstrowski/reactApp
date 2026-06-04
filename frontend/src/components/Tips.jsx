@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Tips({ user }) {
-  // Stany dla widoku admina (lista)
   const [tips, setTips] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!user);
 
-  // Stany dla widoku gościa (formularz)
   const [formData, setFormData] = useState({
     url: "",
     description: "",
@@ -14,12 +12,8 @@ export default function Tips({ user }) {
   });
   const [status, setStatus] = useState(null);
 
-  // Pobieranie listy zapytań (tylko jeśli użytkownik jest zalogowany)
   useEffect(() => {
     if (user) {
-      setLoading(true);
-
-      // Dodaliśmy credentials: "include", bo ścieżka w backendzie jest chroniona przez isLoggedIn
       fetch("http://localhost:3000/tips/api/list", { credentials: "include" })
         .then((res) => {
           if (!res.ok) throw new Error("Brak dostępu lub błąd serwera");
@@ -36,7 +30,6 @@ export default function Tips({ user }) {
     }
   }, [user]);
 
-  // Obsługa formularza gościa
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -61,7 +54,6 @@ export default function Tips({ user }) {
     }
   };
 
-  // Usuwanie zgłoszenia (Tylko dla zalogowanych adminów)
   const deleteTip = async (id) => {
     if (!window.confirm("Czy na pewno chcesz usunąć?")) return;
     try {
@@ -69,7 +61,7 @@ export default function Tips({ user }) {
         `http://localhost:3000/tips/api/${id}/delete`,
         {
           method: "POST",
-          credentials: "include", // Wymagane autoryzowanie usuwania
+          credentials: "include",
         },
       );
       if (response.ok) {
@@ -83,7 +75,6 @@ export default function Tips({ user }) {
   return (
     <div className="container mt-4">
       {user ? (
-        // WIDOK ADMINA: TABELA
         <>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista Sugestii "Tips"</h1>
@@ -164,7 +155,6 @@ export default function Tips({ user }) {
           )}
         </>
       ) : (
-        // WIDOK GOŚCIA: FORMULARZ
         <>
           {status === "success" && (
             <div className="alert alert-success">
@@ -194,6 +184,14 @@ export default function Tips({ user }) {
                         required
                         value={formData.url}
                         onChange={handleChange}
+                        onInvalid={(e) => {
+                          e.target.setCustomValidity(
+                            "Wpisz poprawny adres URL. Pamiętaj, że musi zaczynać się od https://",
+                          );
+                        }}
+                        onInput={(e) => {
+                          e.target.setCustomValidity("");
+                        }}
                       />
                     </div>
                     <div className="mb-3">

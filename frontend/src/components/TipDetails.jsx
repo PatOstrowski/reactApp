@@ -5,8 +5,7 @@ export default function TipDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [tip, setTip] = useState(null);
-
-  // Stany dla formularza konwersji w Deal
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -15,11 +14,16 @@ export default function TipDetails() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:3000/tips/api/${id}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:3000/tips/api/${id}`, { credentials: "include" })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Brak dostępu do tej zawartości.");
+        }
+        return data;
+      })
       .then((data) => {
         setTip(data);
-        // Pre-fill formularza danymi ze zgłoszenia
         setFormData({
           title: "",
           category: "",
@@ -27,7 +31,10 @@ export default function TipDetails() {
           description: data.description,
         });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+      });
   }, [id]);
 
   const handleChange = (e) =>
@@ -42,10 +49,11 @@ export default function TipDetails() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
+          credentials: "include",
         },
       );
       if (response.ok) {
-        navigate("/deals"); // Przekierowanie na listę Deals po sukcesie
+        navigate("/deals");
       }
     } catch (error) {
       console.error(error);
@@ -57,7 +65,10 @@ export default function TipDetails() {
     try {
       const response = await fetch(
         `http://localhost:3000/tips/api/${id}/delete`,
-        { method: "POST" },
+        {
+          method: "POST",
+          credentials: "include",
+        },
       );
       if (response.ok) {
         navigate("/tips");
@@ -67,12 +78,27 @@ export default function TipDetails() {
     }
   };
 
-  if (!tip)
+  if (error) {
     return (
-      <div className="text-center mt-5">
-        <div className="spinner-border"></div>
+      <div className="container mt-5 text-center">
+        <div className="alert alert-danger">
+          <h4>Błąd!</h4>
+          <p>{error}</p>
+        </div>
+        <Link to="/tips" className="btn btn-primary">
+          Wróć do listy
+        </Link>
       </div>
     );
+  }
+
+  if (!tip) {
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border text-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">
@@ -84,7 +110,7 @@ export default function TipDetails() {
               <span
                 className={`badge ${tip.status === "nowa" ? "bg-success" : "bg-primary"}`}
               >
-                Status: {tip.status.toUpperCase()}
+                Status: {tip.status ? tip.status.toUpperCase() : "NIEZNANY"}
               </span>
             </div>
 

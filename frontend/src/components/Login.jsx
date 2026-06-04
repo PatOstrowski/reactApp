@@ -17,12 +17,12 @@ export default function Login({ setUser }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        credentials: "include", // Bardzo ważne dla działania isLoggedIn w backendzie!
+        credentials: "include",
       });
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data)); // Zapis dla Reacta
+        localStorage.setItem("user", JSON.stringify(data));
         setUser(data);
         navigate("/");
       } else {

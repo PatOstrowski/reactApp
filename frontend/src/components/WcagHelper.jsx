@@ -38,7 +38,6 @@ export default function WcagHelper() {
     setHtmlClass();
   };
 
-  // Uruchomienie przy załadowaniu strony
   useEffect(() => {
     setHtmlClass();
   }, []);

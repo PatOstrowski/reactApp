@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DealCard from "./DealCard"; // Importujemy nasz nowy komponent!
+import DealCard from "./DealCard";
 
 export default function DealList() {
   const [deals, setDeals] = useState([]);
@@ -63,7 +63,6 @@ export default function DealList() {
           <div className="container">
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {deals.map((deal) => (
-                /* Wywołujemy komponent i przekazujemy dane jako propsy. Dodajemy klucz tutaj. */
                 <DealCard key={deal._id} deal={deal} handleVote={handleVote} />
               ))}
             </div>
