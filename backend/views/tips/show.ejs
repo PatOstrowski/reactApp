@@ -1,0 +1,104 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div
+          class="card-header d-flex justify-content-between align-items-center bg-dark text-white"
+        >
+          <h3 class="mb-0">Szczegóły Sugestii</h3>
+          <span
+            class="badge <%= tip.status === 'nowa' ? 'bg-success' : (tip.status === 'przetworzona' ? 'bg-primary' : 'bg-danger') %>"
+          >
+            Status: <%= tip.status.toUpperCase() %>
+          </span>
+        </div>
+        <div class="card-body">
+          <p>
+            <strong>Data zgłoszenia:</strong> <%=
+            tip.createdAt.toLocaleString('pl-PL') %>
+          </p>
+          <p>
+            <strong>Email zgłaszającego:</strong> <%= tip.email || 'Brak danych'
+            %>
+          </p>
+          <p>
+            <strong>URL Okazji:</strong>
+            <a href="<%= tip.url %>" target="_blank"><%= tip.url %></a>
+          </p>
+
+          <hr />
+
+          <h4 class="mb-3 text-primary">Utwórz z tego Okazję (Deal)</h4>
+
+          <form
+            action="/tips/<%= tip._id %>/approve"
+            method="POST"
+            class="bg-light p-3 border rounded"
+          >
+            <div class="mb-3">
+              <label class="form-label fw-bold">Tytuł (wymagany)</label>
+              <input
+                type="text"
+                name="title"
+                class="form-control"
+                required
+                placeholder="Wpisz krótki tytuł okazji"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Kategoria (wymagana)</label>
+              <input
+                type="text"
+                name="category"
+                class="form-control"
+                required
+                placeholder="np. Elektronika"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Link do obrazka / URL</label>
+              <input
+                type="text"
+                name="imageUrl"
+                class="form-control"
+                value="<%= tip.url %>"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Opis</label>
+              <textarea
+                name="description"
+                class="form-control"
+                rows="3"
+                required
+              >
+<%= tip.description %></textarea
+              >
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="/tips" class="btn btn-secondary">Wróć do listy</a>
+              <button type="submit" class="btn btn-success">
+                Zatwierdź i Utwórz Deal
+              </button>
+            </div>
+          </form>
+
+          <div class="text-end mt-3">
+            <form
+              action="/tips/<%= tip._id %>/delete"
+              method="POST"
+              class="d-inline"
+              onsubmit="return confirm('Trwale usunąć ten wpis z bazy?');"
+            >
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                Odrzuć i usuń sugestię
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
