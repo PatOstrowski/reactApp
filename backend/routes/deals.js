@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Deal = require("../models/Deal");
 
-// GET All Deals API
 router.get("/api/list", async (req, res) => {
   try {
     const deals = await Deal.find({});
@@ -13,7 +12,6 @@ router.get("/api/list", async (req, res) => {
   }
 });
 
-// GET All Deals
 router.get("/", async (req, res) => {
   try {
     const deals = await Deal.find({});
@@ -28,7 +26,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET Deal Details
 router.get("/api/:id", async (req, res) => {
   try {
     const deal = await Deal.findById(req.params.id);
@@ -42,7 +39,6 @@ router.get("/api/:id", async (req, res) => {
   }
 });
 
-// POST Upvote Deal
 router.post("/api/:id/upvote", async (req, res) => {
   try {
     const deal = await Deal.findByIdAndUpdate(
@@ -50,14 +46,13 @@ router.post("/api/:id/upvote", async (req, res) => {
       { $inc: { score: 1 } },
       { new: true },
     );
-    res.json(deal); // Zwracamy zaktualizowany obiekt w JSON
+    res.json(deal);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server Error" });
   }
 });
 
-// POST Downvote Deal
 router.post("/api/:id/downvote", async (req, res) => {
   try {
     const deal = await Deal.findByIdAndUpdate(
@@ -65,7 +60,7 @@ router.post("/api/:id/downvote", async (req, res) => {
       { $inc: { score: -1 } },
       { new: true },
     );
-    res.json(deal); // Zwracamy zaktualizowany obiekt w JSON
+    res.json(deal);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server Error" });
